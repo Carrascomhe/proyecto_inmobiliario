@@ -141,3 +141,5 @@ UNFOLD = {
     "SITE_TITLE": "Inmobiliaria Admin", # Título en la pestaña del navegador
     "SITE_HEADER": "Inmobiliaria XYZ",  # Título en la barra lateral
 }
+
+TATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
