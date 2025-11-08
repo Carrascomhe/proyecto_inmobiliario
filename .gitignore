@@ -1,0 +1,15 @@
+# Ignorar el Entorno Virtual
+venv/
+
+# Ignorar la Base de Datos de prueba
+db.sqlite3
+
+# Ignorar archivos compilados de Python
+*.pyc
+__pycache__/
+
+# Ignorar la carpeta de 'media' (fotos subidas por usuarios)
+media/
+
+# Ignorar la carpeta 'staticfiles' (se genera en el servidor)
+staticfiles/

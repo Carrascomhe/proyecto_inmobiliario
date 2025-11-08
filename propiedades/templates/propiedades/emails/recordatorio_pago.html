@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recordatorio de Pago</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; line-height: 1.6; background-color: #f4f4f4;">
+
+    <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #f4f4f4;">
+        <tr>
+            <td align="center">
+                <table width="600" border="0" cellpadding="0" cellspacing="0" style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.1);">
+                    
+                    <tr>
+                        <td style="padding: 30px 40px; background-color: #0d6efd; color: #ffffff; text-align: center;">
+                            <h1 style="margin: 0; font-size: 28px;">Inmobiliaria XYZ</h1>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding: 40px 40px 30px 40px; color: #333;">
+                            
+                            <h2 style="margin-top: 0; color: #0d6efd;">Hola, {{ inquilino.nombre_completo }}</h2>
+                            
+                            <p style="font-size: 16px;">Este es un recordatorio amigable de que tu próximo pago de renta está por vencer.</p>
+                            
+                            <div style="background-color: #f9f9f9; border: 1px solid #eee; padding: 20px; border-radius: 5px; margin-top: 20px;">
+                                <table width="100%" border="0" cellpadding="0" cellspacing="0">
+                                    <tr>
+                                        <td style="padding-bottom: 10px; font-size: 16px;">
+                                            <strong>Propiedad:</strong>
+                                        </td>
+                                        <td style="padding-bottom: 10px; font-size: 16px; text-align: right;">
+                                            {{ pago.contrato.propiedad.titulo }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-bottom: 10px; font-size: 16px;">
+                                            <strong>Monto a Pagar:</strong>
+                                        </td>
+                                        <td style="padding-bottom: 10px; font-size: 16px; text-align: right; color: #0d6efd; font-weight: bold;">
+                                            ${{ pago.monto|floatformat:2 }}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding-top: 10px; border-top: 1px solid #eee; font-size: 18px; font-weight: bold;">
+                                            Fecha de Vencimiento:
+                                        </td>
+                                        <td style="padding-top: 10px; border-top: 1px solid #eee; font-size: 18px; text-align: right; font-weight: bold; color: #d9534f;">
+                                            {{ pago.fecha_vencimiento }}
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            
+                            <p style="font-size: 16px; margin-top: 30px;">
+                                Si ya realizaste este pago, por favor ignora este mensaje.
+                            </p>
+                            
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="padding: 30px 40px; background-color: #f9f9f9; text-align: center; color: #777; font-size: 12px;">
+                            <p style="margin: 0;">&copy; 2025 Inmobiliaria XYZ. Todos los derechos reservados.</p>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+</body>
+</html>

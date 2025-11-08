@@ -1,0 +1,110 @@
+{% extends 'propiedades/base.html' %}
+
+{% block title %}{{ propiedad.titulo }} - Inmobiliaria XYZ{% endblock %}
+
+{% block contenido %}
+
+<div class="container my-5">
+    <div class="row">
+
+        <div class="col-lg-7">
+            
+            <img src="{% if propiedad.foto_principal %}{{ propiedad.foto_principal.url }}{% else %}https://via.placeholder.com/800x500.png?text=Foto+Principal{% endif %}" 
+                 class="img-fluid rounded-3 shadow-sm w-100 mb-3" 
+                 alt="{{ propiedad.titulo }}" 
+                 id="mainPhoto">
+
+            <div class="row g-2">
+                
+                {% if propiedad.foto_principal %}
+                <div class="col-3">
+                    <img src="{{ propiedad.foto_principal.url }}" 
+                         class="img-fluid rounded-3" 
+                         alt="Miniatura Principal" 
+                         style="cursor: pointer;" 
+                         onclick="changeMainImage('{{ propiedad.foto_principal.url }}')">
+                </div>
+                {% endif %}
+
+                {% for foto in propiedad.fotos_galeria.all %}
+                <div class="col-3">
+                    <img src="{{ foto.imagen.url }}" 
+                         class="img-fluid rounded-3" 
+                         alt="Foto de galería" 
+                         style="cursor: pointer;" 
+                         onclick="changeMainImage('{{ foto.imagen.url }}')">
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="col-lg-5">
+            <h1 class="display-5 fw-bold">{{ propiedad.titulo }}</h1>
+
+            {% if propiedad.tipo_operacion == 'Renta' %}
+                <p class="display-6 text-primary fw-bold">
+                    ${{ propiedad.precio|floatformat:2 }} / Mes
+                </p>
+            {% else %}
+                <p class="display-6 text-success fw-bold">
+                    ${{ propiedad.precio|floatformat:2 }} (Venta)
+                </p>
+            {% endif %}
+
+            <p class="fs-5 text-muted">
+                <i class="bi bi-geo-alt-fill"></i> {{ propiedad.direccion }}, {{ propiedad.ciudad }}
+            </p>
+
+            <hr>
+
+            <h4 class="mt-4">Características</h4>
+            <div class="row g-3 fs-5">
+                <div class="col-6">
+                    <i class="bi bi-rulers text-muted"></i> {{ propiedad.metros_cuadrados }} m²
+                </div>
+                <div class="col-6">
+                    <i class="bi bi-door-closed text-muted"></i> {{ propiedad.num_habitaciones }} hab.
+                </div>
+                <div class="col-6">
+                    <i class="bi bi-droplet text-muted"></i> {{ propiedad.num_baños }} baños
+                </div>
+            </div>
+
+            <div class="d-grid gap-2 mt-4">
+                <a href="#" class="btn btn-primary btn-lg">
+                    <i class="bi bi-whatsapp"></i> Contactar por WhatsApp
+                </a>
+                <a href="#" class="btn btn-outline-secondary btn-lg">
+                    <i class="bi bi-envelope"></i> Enviar Mensaje
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3>Descripción Completa</h3>
+            <div class="bg-light p-4 rounded-3">
+                <p class="fs-5">{{ propiedad.descripcion|linebreaksbr }}</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-5">
+        <a href="{% url 'inicio' %}" class="text-decoration-none">
+            <i class="bi bi-arrow-left"></i> Volver al listado
+        </a>
+    </div>
+
+</div>
+
+<script>
+    function changeMainImage(newImageUrl) {
+        // Busca la imagen principal por su ID ('mainPhoto')
+        // y cambia su 'src' (la fuente de la imagen)
+        // por la URL de la miniatura en la que hicimos clic.
+        document.getElementById('mainPhoto').src = newImageUrl;
+    }
+</script>
+
+{% endblock %}

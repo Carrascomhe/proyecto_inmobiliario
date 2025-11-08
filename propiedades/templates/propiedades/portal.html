@@ -1,0 +1,117 @@
+{% extends 'propiedades/base.html' %}
+
+{% block title %}Mi Portal{% endblock %}
+
+{% block contenido %}
+
+    <div class="container my-5">
+        {% if cliente %}
+
+            {% if pagos_vencidos %}
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading"><i class="bi bi-exclamation-triangle-fill"></i> ¡Atención! Tienes Pagos Vencidos</h4>
+                    <p>Hemos detectado uno o más pagos que han superado su fecha de vencimiento. Por favor, contacta al administrador para regularizar tu situación.</p>
+                    <hr>
+                    <ul class="mb-0">
+                        {% for pago in pagos_vencidos %}
+                            <li>
+                                <strong>${{ pago.monto|floatformat:2 }}</strong> 
+                                - Vencido el {{ pago.fecha_vencimiento }} 
+                                <span class="text-muted">(Contrato: {{ pago.contrato.propiedad.titulo }})</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            {% if proximo_pago and not pagos_vencidos %}
+                <div class="alert alert-info" role="alert">
+                    <h4 class="alert-heading"><i class="bi bi-info-circle-fill"></i> Tu Próximo Pago</h4>
+                    <p class="mb-0 fs-5">
+                        Tu pago más cercano es de 
+                        <strong>${{ proximo_pago.monto|floatformat:2 }}</strong> 
+                        con fecha de vencimiento el 
+                        <strong>{{ proximo_pago.fecha_vencimiento }}</strong>.
+                    </p>
+                    <p class="mb-0 small text-muted">(Contrato: {{ proximo_pago.contrato.propiedad.titulo }})</p>
+                </div>
+            {% endif %}
+            
+            <hr class="my-4"> <div class="row">
+                
+                <div class="col-md-8">
+                    <h3 class="mb-4">Tus Contratos</h3>
+                    
+                    {% for contrato in contratos %}
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-header bg-white fs-5">
+                                <i class="bi bi-file-earmark-text"></i>
+                                Propiedad: <strong>{{ contrato.propiedad.titulo }}</strong>
+                            </div>
+                            <div class="card-body">
+                                <h4 class="card-title text-primary">
+                                    Renta: ${{ contrato.monto_renta_actual|floatformat:2 }} / Mes
+                                </h4>
+                                <p class="card-text fs-5">
+                                    Día de pago: <strong>Día {{ contrato.dia_pago_mensual }}</strong> de cada mes.
+                                </p>
+                                <ul class="list-group list-group-flush">
+                                    <li class="list-group-item"><strong>Inicio de Contrato:</strong> {{ contrato.fecha_inicio }}</li>
+                                    <li class="list-group-item"><strong>Fin de Contrato:</strong> {{ contrato.fecha_fin }}</li>
+                                    <li class="list-group-item"><strong>Aumento:</strong> {{ contrato.porcentaje_aumento|floatformat:2 }}% cada {{ contrato.frecuencia_aumento_meses }} meses.</li>
+                                </ul>
+
+                                <h6 class="mt-4 mb-3">Historial de Pagos</h6>
+                                <ul class="list-group">
+                                    {% for pago in contrato.pagos.all %}
+                                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                                            <div>
+                                                <strong>Vencimiento:</strong> {{ pago.fecha_vencimiento }}
+                                                <br>
+                                                <span class="text-muted">Monto: ${{ pago.monto|floatformat:2 }}</span>
+                                            </div>
+                                            
+                                            {% if pago.estado == 'Pagado' %}
+                                                <span class="badge bg-success rounded-pill">Pagado</span>
+                                            {% elif pago.estado == 'Vencido' %}
+                                                <span class="badge bg-danger rounded-pill">Vencido</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary rounded-pill">Pendiente</span>
+                                            {% endif %}
+                                        </li>
+                                    {% empty %}
+                                        <li class="list-group-item text-muted">Aún no se han generado registros de pago.</li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    {% empty %}
+                        <div class="alert alert-info">
+                            <h4 class="alert-heading">¡Sin contratos!</h4>
+                            <p>Parece que aún no tienes ningún contrato de renta asociado a tu perfil.</p>
+                        </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="col-md-4">
+                    <h3 class="mb-4">Tu Información</h3>
+                    <ul class="list-group shadow-sm">
+                        <li class="list-group-item"><strong>Nombre:</strong> {{ cliente.nombre_completo }}</li>
+                        <li class="list-group-item"><strong>Email:</strong> {{ cliente.email }}</li>
+                        <li class="list-group-item"><strong>Teléfono:</strong> {{ cliente.telefono|default:"No registrado" }}</li>
+                        <li class="list-group-item"><strong>Usuario:</strong> {{ user.username }}</li>
+                    </ul>
+                </div>
+            </div>
+        {% else %}
+            <p class="alert alert-warning">
+                Parece que tu cuenta de usuario no está enlazada a un perfil de cliente.
+                Por favor, contacta al administrador.
+            </p>
+        {% endif %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

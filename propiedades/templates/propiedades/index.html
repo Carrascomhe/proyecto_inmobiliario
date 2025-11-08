@@ -1,0 +1,95 @@
+{% extends 'propiedades/base.html' %}
+
+{% block title %}Inicio - Inmobiliaria XYZ{% endblock %}
+
+{% block contenido %}
+
+    <div class="container text-center my-5 py-5">
+        <div class="row">
+            <div class="col-lg-8 col-md-10 mx-auto">
+                <h1 class="display-4 fw-bold">Encuentra tu próximo hogar</h1>
+                <p class="fs-4 text-muted">La propiedad perfecta para rentar o comprar está a solo un clic.</p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center mt-4">
+                    <a href="#renta" class="btn btn-primary btn-lg px-4 gap-3">Ver Rentas</a>
+                    <a href="#venta" class="btn btn-outline-secondary btn-lg px-4">Ver Ventas</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="py-5 bg-light" id="renta"> <div class="container">
+            <h2 class="display-6 text-center fw-bold mb-5">Propiedades en RENTA</h2>
+            
+            <div class="row g-4">
+                
+                {% for prop in listado_renta %}
+                    <div class="col-md-6 col-lg-4">
+                        
+                        <div class="card h-100 shadow-sm border-0 rounded-3"> <img src="{% if prop.foto_principal %}{{ prop.foto_principal.url }}{% else %}https://via.placeholder.com/400x250.png?text=Foto+Propiedad{% endif %}" class="card-img-top rounded-top" alt="Foto de {{ prop.titulo }}" style="height: 250px; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">
+                                    <a href="{% url 'detalle' prop.pk %}" class="text-decoration-none text-dark">{{ prop.titulo }}</a>
+                                </h5>
+                                <h6 class="card-subtitle mb-2 text-primary fw-bold"> ${{ prop.precio|floatformat:2 }} / Mes
+                                </h6>
+                                <p class="card-text text-muted">{{ prop.ciudad }}</p>
+                                
+                                <p class="card-text small border-top pt-2 text-muted">
+                                    <i class="bi bi-rulers"></i> {{ prop.metros_cuadrados }} m²
+                                    &nbsp; | &nbsp;
+                                    <i class="bi bi-door-closed"></i> {{ prop.num_habitaciones }} hab.
+                                    &nbsp; | &nbsp;
+                                    <i class="bi bi-droplet"></i> {{ prop.num_baños }} baños
+                                </p>
+                                
+                                <a href="{% url 'detalle' prop.pk %}" class="btn btn-outline-primary mt-auto">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col">
+                        <p class="alert alert-info">No hay propiedades en renta disponibles por el momento.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="py-5" id="venta"> <div class="container">
+            <h2 class="display-6 text-center fw-bold mb-5">Propiedades en VENTA</h2>
+            
+            <div class="row g-4">
+                
+                {% for prop in listado_venta %}
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0 rounded-3"> <img src="https://via.placeholder.com/400x250.png?text=Foto+Propiedad" class="card-img-top rounded-top" alt="Foto de {{ prop.titulo }}">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">
+                                    <a href="{% url 'detalle' prop.pk %}" class="text-decoration-none text-dark">{{ prop.titulo }}</a>
+                                </h5>
+                                <h6 class="card-subtitle mb-2 text-success fw-bold"> ${{ prop.precio|floatformat:2 }} (Venta)
+                                </h6>
+                                <p class="card-text text-muted">{{ prop.ciudad }}</p>
+                                
+                                <p class="card-text small border-top pt-2 text-muted">
+                                    <i class="bi bi-rulers"></i> {{ prop.metros_cuadrados }} m²
+                                    &nbsp; | &nbsp;
+                                    <i class="bi bi-door-closed"></i> {{ prop.num_habitaciones }} hab.
+                                    &nbsp; | &nbsp;
+                                    <i class="bi bi-droplet"></i> {{ prop.num_baños }} baños
+                                </p>
+                                
+                                <a href="{% url 'detalle' prop.pk %}" class="btn btn-outline-success mt-auto">Ver Detalles</a>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col">
+                        <p class="alert alert-info">No hay propiedades en venta disponibles por el momento.</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
